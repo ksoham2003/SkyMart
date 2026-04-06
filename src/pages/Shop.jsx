@@ -1,11 +1,12 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useContext , useState } from "react";
 import { CartContext } from "../context/CartContext";
+import { ShoppingCart, Check } from "lucide-react";
 
 const Shop = () => {
   const { products, total } = useLoaderData();
   const navigate = useNavigate();
-  const { addToCart } = useContext(CartContext);
+  const { cart, addToCart } = useContext(CartContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
   const [sortBy, setSortBy] = useState("");
@@ -206,15 +207,29 @@ const Shop = () => {
                   </div>
                   <div className="mt-auto flex items-center justify-between pt-4 border-t border-white/10">
                     <span className="text-lg font-bold text-[#cef00f]">${product.price.toFixed(2)}</span>
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        addToCart(product);
-                      }}
-                      className="rounded-full bg-[#cef00f] px-4 py-2 text-sm font-semibold text-black transition hover:bg-[#d6ff1f]"
-                    >
-                      Add
-                    </button>
+                    {cart.some((item) => item.id === product.id) ? (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(product);
+                        }}
+                        className="rounded-full border border-green-500/20 bg-green-500/10 px-4 py-2 text-sm font-semibold text-green-400 flex items-center gap-2 transition hover:bg-green-500/20"
+                      >
+                        <Check className="w-4 h-4" />
+                        Added
+                      </button>
+                    ) : (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(product);
+                        }}
+                        className="rounded-full bg-[#cef00f] px-4 py-2 text-sm font-semibold text-black transition hover:bg-[#d6ff1f] flex items-center gap-2"
+                      >
+                        <ShoppingCart className="w-4 h-4" />
+                        Add
+                      </button>
+                    )}
                   </div>
                 </div>
               </article>
